@@ -46,6 +46,7 @@
 				this.$u.route({ 
 					url: path
 				})
+				console.log("111111")
 			},
 			getGroupTitle(item) {
 				return this.$i18n.locale == 'zh' ? item.groupName : item.groupName_en

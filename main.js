@@ -31,6 +31,10 @@ import English from '@/common/locales/en.js';
 // VueI18n
 import VueI18n from '@/common/vue-i18n.min.js';
 
+import request from "@/common/http.js";
+
+Vue.prototype.$requst = request
+
 // VueI18n
 Vue.use(VueI18n);
 
