@@ -1,104 +1,82 @@
 <template>
-  <view class="container">
-    <view class="">
-      <u-form :model="form" ref="uForm">
-        <u-form-item label="查询" prop="name">
-          <u-input v-model="form.name" />
-        </u-form-item>
-      </u-form>
-      <u-button @click="submit">提交</u-button>
-    </view>
-    <view class="songs">
-      <view class="song_item" v-for="(item, index) in songs" :key="index">
-        <view class="song_name">
-          <text>{{ item.name }}</text>
-        </view>
-        <view class="song_singer">
-          <text>{{ item.artists[0].name }}</text>
-        </view>
-      </view>
-    </view>
-  </view>
+	<view class="container">
+		<view class="silder">
+			<u-swiper :list="sliderList" mode="rect" :effect3d="true"></u-swiper>
+		</view>
+		<view class="top_menu">
+
+		</view>
+		<view class="recommended_playlist">
+
+		</view>
+		<view class="featured_playlist">
+
+		</view>
+		<view class="leaderboard">
+
+		</view>
+		<!-- <u-gap height="70"></u-gap> -->
+	</view>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      songs: {},
-      form: {
-        name: "",
-        intro: "",
-      },
-      rules: {
-        name: [
-          {
-            required: true,
-            message: "请输入关键词",
-            // 可以单个或者同时写两个触发验证方式
-            trigger: ["change", "blur"],
-          },
-        ],
-        intro: [
-          {
-            min: 5,
-            message: "简介不能少于5个字",
-            trigger: "change",
-          },
-        ],
-      },
-    };
-  },
-  methods: {
-    submit() {
-      this.$refs.uForm.validate((valid) => {
-        if (valid) {
-          // console.log('验证通过');
-          // this.$requst("search", {
-          // 	keywords: this.form.name
-          // }).then(res => {
-          // 	this.songs = res.data
-          // })
-          this.$u
-            .get("search", {
-              keywords: this.form.name,
-            })
-            .then((res) => {
-              console.log(res);
-              this.songs = res.result.songs;
-            });
-        } else {
-          console.log("验证失败");
-        }
-      });
-    },
-  },
-  onReady() {
-    this.$refs.uForm.setRules(this.rules);
-  },
-};
+	export default {
+		data() {
+			return {
+				sliderList: [{
+						image: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
+						title: '昨夜星辰昨夜风，画楼西畔桂堂东'
+					},
+					{
+						image: 'https://cdn.uviewui.com/uview/swiper/2.jpg',
+						title: '身无彩凤双飞翼，心有灵犀一点通'
+					},
+					{
+						image: 'https://cdn.uviewui.com/uview/swiper/3.jpg',
+						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
+					}
+				],
+			};
+		},
+		methods: {
+			GetBanner() {
+				// this.$u.get("banner", {
+				// 	type: 2
+				// }).then(res => {
+				// 	console.log(res)
+				// 	if (res.code == 200) {
+				// 		this.sliderList = []
+				// 		res.banners.forEach(function(item){
+				// 			this.sliderList.push({
+				// 				image: item.pic,
+				// 				title: item.typeTitle
+				// 			})
+				// 		})					
+				// 	}
+				// })
+				uni.request({
+					url:"https://netease-cloud-music-api-alpha-virid.vercel.app/banner",
+					data:{
+						type:2
+					}
+				}).then(res=>{
+					console.log(res)
+				})
+			}
+		},
+		onReady() {},
+		onLoad() {
+			this.GetBanner()
+		}
+	}
 </script>
 
 <style lang="scss" scoped>
-.container {
-  .songs {
-    width: 100%;
-    display: flex;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-    .song_item {
-      width: 100%;
-      
-      display: flex;
-      justify-content: flex-start;
-	  .song_name{
-		  width: 50%;
-	  }
-	  .song_singer{
-		  width: 50%;
-	  }
-    }
-
-  }
-}
+	.container {
+		.slider {
+			width: 80%;
+			border-radius: 16rpx;
+			padding: 40px;
+		}
+	}
 </style>

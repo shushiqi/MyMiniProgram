@@ -1,6 +1,6 @@
 {
     "name" : "MyMiniProgram",
-    "appid" : "",
+    "appid" : "__UNI__A1C0400",
     "description" : "多平台快速开发的UI框架",
     "versionName" : "1.8.4",
     "versionCode" : "100",
@@ -93,7 +93,7 @@
     },
     "quickapp" : {},
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx1e2cc9755d531c9a",
         "setting" : {
             "urlCheck" : true,
             "es6" : false,
