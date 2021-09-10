@@ -13,15 +13,15 @@
 	"pages": [{
 			"path": "pages/home/index",
 			"style": {
-				"navigationBarTitleText":"主页"
+				"navigationBarTitleText": "主页"
 			}
 		},
 		{
-				"path": "pages/my/index",
-				"style": {
-					"navigationBarTitleText":"我的"
-				}
-			},
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		},
 		// 演示-组件
 		{
 			"path": "pages/example/components",
