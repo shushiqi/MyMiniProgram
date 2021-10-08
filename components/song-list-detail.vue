@@ -1,86 +1,115 @@
 <template>
 	<view class="content">
 		<view class="list-info">
-			<view class="bgImg" :style="{backgroundImage: `url(${backgroundImage})`, backgroundSize:'100% 100%' }">
+			<view class="bgImg" :style="{
+          backgroundImage: `url(${backgroundImage})`,
+          backgroundSize: '100% 100%',
+        }">
 			</view>
 			<view class="left-cover">
-				<u-image width="100px" height="100px" border-radius="32" class="cover" :src="playlist.coverImgUrl">
+				<u-image width="200rpx" height="200rpx" border-radius="32" class="cover" :src="playlist.coverImgUrl">
 				</u-image>
 				<u-badge type="info" :count="playlist.playCount"></u-badge>
 			</view>
 			<view class="right-info">
-				<text class="name">{{playlist.name}}</text>
+				<text class="name">{{ playlist.name }}</text>
 				<view class="creator">
 					<view class="creator-avartar">
-						<u-image width="40px" height="40px" border-radius="16" class="cover"
+						<u-image width="80rpx" height="80rpx" border-radius="16" class="cover"
 							:src="playlist.creator.avatarUrl">
 						</u-image>
 					</view>
 					<view class="creator-name">
-						<text>{{playlist.creator.nickname}}</text>
+						<text>{{ playlist.creator.nickname }}</text>
 					</view>
 					<!-- <image src="" mode="" class="subscribe-icon"></image> -->
 				</view>
 				<view class="description">
-					<text>{{playlist.description?playlist.description:""}}</text>
+					<text>{{ playlist.description ? playlist.description : "" }}</text>
 				</view>
 			</view>
 		</view>
-		<scroll-view class="song-list">
-			<view class="button-group">
-				<view class="subscribe">
-					<u-icon :name="playlist.subscribed? 'star-fill':'star'" size="mini"></u-icon>
-					{{playlist.subscribedCount}}
-				</view>
-				<view class="comment">
-					<u-icon name="chat" size="mini"></u-icon>{{playlist.commentCount}}
-				</view>
-				<view class="share">
-					<u-icon name="share" size="mini"></u-icon>{{playlist.commentCount}}{{playlist.shareCount}}
-				</view>
+		<view class="button-group">
+			<view class="subscribe">
+				<u-icon :name="playlist.subscribed ? 'star-fill' : 'star'" size="mini"></u-icon>
+				{{ playlist.subscribedCount }}
 			</view>
+			<view class="comment">
+				<u-icon name="chat" size="mini"></u-icon>{{ playlist.commentCount }}
+			</view>
+			<view class="share">
+				<u-icon name="share" size="mini"></u-icon>{{ playlist.shareCount }}
+			</view>
+		</view>
+		<scroll-view class="song-list">
+			<view class="control"> </view>
 			<view class="songs">
-
+				<view class="song" v-for="(item, index) in song" :key="index">
+					<view class="ord">
+						<text>{{ index+1 }}</text>
+					</view>
+					<song :infoObj="item"></song>
+				</view>
 			</view>
 		</scroll-view>
 	</view>
 </template>
 
 <script>
-	import divider from "@/components/divider.vue"
+	import divider from "@/components/divider.vue";
+	import Song from "@/components/song.vue";
 	export default {
 		name: "song-list-detail",
 		components: {
-			divider
+			divider,
+			Song,
 		},
 		data() {
 			return {
 				id: "",
-				playlist: {},
+				playlist: {
+					subscribedCount: 0,
+					commentCount: 0,
+					shareCount: 0,
+				},
 				infoBG: {
 					width: "100%",
 					height: "100%",
 					backgroundSize: "cover",
 				},
 				backgroundImage: "",
-
+				song: [],
 			};
 		},
 		onLoad(options) {
-			console.log(options)
-			this.id = options.id
-			this.$u.get("playlist/detail", {
-				id: this.id
-			}).then(res => {
-				if (res.code == 200) {
-					console.log(res)
-					this.playlist = res.playlist
-					this.backgroundImage = res.playlist.coverImgUrl
-				}
-			})
+			console.log(options);
+			this.id = options.id;
+			this.$u
+				.get("playlist/detail", {
+					id: this.id,
+				})
+				.then((res) => {
+					if (res.code == 200) {
+						console.log(res);
+						this.playlist = res.playlist;
+						this.backgroundImage = res.playlist.coverImgUrl;
+						if (res.playlist.tracks.length > 0) {
+							this.song = [];
+							// for (let i = 0; i < res.playlist.tracks.length; i++) {
+							for (let i = 0; i < 1; i++) {
+								let element = res.playlist.tracks[i];
+								this.song.push({
+									cover: element.al.picUrl,
+									name: element.name,
+									singer: element.ar.name,
+									album: element.al.name,
+								});
+							}
+						}
+					}
+				});
 		},
-
-	}
+	};
 </script>
 
 <style lang="scss">
@@ -150,30 +179,37 @@
 			}
 		}
 
-
+		.button-group {
+			width: 70%;
+			height: 60rpx;
+			border: 1px solid #000000;
+			background-color: #ffffff;
+			border-radius: 50px;
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			position: relative;
+			top: 30rpx;
+			margin-bottom: 16rpx;
+		}
 
 		.song-list {
 			width: 100%;
 			height: 600rpx;
-			background-color: #FFFFFF;
-				
+			background-color: #ffffff;
 
-			.button-group {
-				width: 70%;
-				height: 60rpx;
-				border: 1px solid #000000;
-				background-color: #FFFFFF;
-				border-radius: 50px;
+			.songs {
 				display: flex;
-				justify-content: space-around;
+				flex-wrap: wrap;
+				justify-content: flex-start;
 				align-items: center;
-				position: relative;
-				left: 50%;
-				transform: translate(-50%, 0);
-				z-index: 9999;
+
+				.song {
+					width: 100%;
+					height: 100rpx;
+
+				}
 			}
 		}
-
-
 	}
 </style>
