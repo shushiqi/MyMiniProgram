@@ -1,7 +1,7 @@
 {
     "name" : "MyMiniProgram",
     "appid" : "__UNI__A1C0400",
-    "description" : "多平台快速开发的UI框架",
+    "description" : "一个尝试性的小程序",
     "versionName" : "1.8.4",
     "versionCode" : "100",
     "transformPx" : false,
@@ -134,6 +134,6 @@
                 "enable" : false
             }
         },
-        "title" : "uView UI"
+        "title" : "MyMiniProgram"
     }
 }
