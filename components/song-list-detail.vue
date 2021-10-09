@@ -30,14 +30,14 @@
 			</view>
 		</view>
 		<view class="button-group">
-			<view class="subscribe">
+			<view class="subscribe button">
 				<u-icon :name="playlist.subscribed ? 'star-fill' : 'star'" size="mini"></u-icon>
 				{{ playlist.subscribedCount }}
 			</view>
-			<view class="comment">
+			<view class="comment button">
 				<u-icon name="chat" size="mini"></u-icon>{{ playlist.commentCount }}
 			</view>
-			<view class="share">
+			<view class="share button">
 				<u-icon name="share" size="mini"></u-icon>{{ playlist.shareCount }}
 			</view>
 		</view>
@@ -45,10 +45,10 @@
 			<view class="control"> </view>
 			<view class="songs">
 				<view class="song" v-for="(item, index) in song" :key="index">
-					<view class="ord">
+					<view class="song-ord">
 						<text>{{ index+1 }}</text>
 					</view>
-					<song :infoObj="item"></song>
+					<song class="song-info" :infoObj="item"></song>
 				</view>
 			</view>
 		</scroll-view>
@@ -95,13 +95,16 @@
 						this.backgroundImage = res.playlist.coverImgUrl;
 						if (res.playlist.tracks.length > 0) {
 							this.song = [];
-							// for (let i = 0; i < res.playlist.tracks.length; i++) {
-							for (let i = 0; i < 1; i++) {
+							for (let i = 0; i < res.playlist.tracks.length; i++) {
+
 								let element = res.playlist.tracks[i];
+								if (element.alia.length > 0) {
+									element.name = `${element.name}(${element.alia[0]})`
+								}
 								this.song.push({
 									cover: element.al.picUrl,
 									name: element.name,
-									singer: element.ar.name,
+									singer: element.ar[0].name,
 									album: element.al.name,
 								});
 							}
@@ -189,13 +192,27 @@
 			justify-content: space-around;
 			align-items: center;
 			position: relative;
-			top: 30rpx;
-			margin-bottom: 16rpx;
+			top: 60rpx;
+			margin-bottom: 32rpx;
+
+			.button {
+				width: 30%;
+				display: flex;
+				justify-content: center;
+			}
+
+			.subscribe {
+				border-right: 1px solid #E5E5E5;
+			}
+
+			.comment {
+				border-right: 1px solid #E5E5E5;
+			}
 		}
 
 		.song-list {
 			width: 100%;
-			height: 600rpx;
+			// height: 600rpx;
 			background-color: #ffffff;
 
 			.songs {
@@ -206,8 +223,22 @@
 
 				.song {
 					width: 100%;
-					height: 100rpx;
+					height: 120rpx;
+					display: flex;
+					justify-content: center;
+					align-items: center;
 
+					&-ord {
+						width: 5%;
+
+						font-size: 48rpx;
+						color: #999999;
+						text-align: center;
+					}
+
+					&-info {
+						width: 90%;
+					}
 				}
 			}
 		}
